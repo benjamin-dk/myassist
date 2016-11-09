@@ -264,11 +264,12 @@ body[class^=" room-size-"] #page #main #content {
 }
 #opeka-app .user-list-item {
   position: relative;
+  height: 20px;
+  margin-top: .5em;
 }
 
 #opeka-app .dropdown-toggle {
   position: absolute;
-  right: 0;
   top: 0;
   bottom: 0;
   display: block;
@@ -282,6 +283,11 @@ body[class^=" room-size-"] #page #main #content {
   display: block;
   background: url(/sites/all/themes/myassist_theme/images/icons/plus.svg) no-repeat center center transparent;
   background-size: 0.8em auto;
+}
+#opeka-app .dropdown-toggle .name {
+  position: absolute;
+  left: 32px;
+  top: 2px;
 }
 #opeka-app .dropdown-menu {
   display: none;
