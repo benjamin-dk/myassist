@@ -1,14 +1,12 @@
 /* Styles for this module that relate to the Myassist_theme are located at /themes/myassist_theme/sass/components/_opeka.scss */
 
 /* We want the chat window in all room-sizes to expand to a bigger width */
-body[class^="room-size-"] #main,
-body[class*=" room-size-"] #main {
-  width: 100%;
-}
 
-body[class^="room-size-"] #page #main #content,
-body[class^=" room-size-"] #page #main #content {
-    width: 100%;
+body.page-admin-opeka #page #main #content,
+body.page-admin-opeka #main,
+body.page-opeka #page #main #content,
+body.page-opeka #main{
+  width: 100%;
 }
 
 /*
@@ -268,7 +266,11 @@ body[class^=" room-size-"] #page #main #content {
   margin-top: .5em;
 }
 
-#opeka-app .dropdown-toggle {
+#opeka-app .user-list-item a {
+  margin-left: 32px;
+}
+
+#opeka-app a.dropdown-toggle {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -276,6 +278,7 @@ body[class^=" room-size-"] #page #main #content {
   width: 1.5em;
   height: 1.5em;
   padding: 0;
+  margin-left: 0;
 }
 #opeka-app .dropdown-toggle .icon-user {
   width: 1.5em;
@@ -299,6 +302,7 @@ body[class^=" room-size-"] #page #main #content {
   left: 0;
   right: 0;
   box-shadow: 0 2px 1px 1px rgba(0,0,0,0.1);
+  z-index: 1;
 }
 #opeka-app .dropdown-menu li {
   padding: 0.5em;
