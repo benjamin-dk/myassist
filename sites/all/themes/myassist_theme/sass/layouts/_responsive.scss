@@ -322,6 +322,10 @@ body {
     }
   }
 
+  /* Polls in main content region */
+  #content .block-simple-voting {
+    max-width: 50%;
+  }
 }
 
 
@@ -497,7 +501,7 @@ body {
       clear: both;
     }
   }
-  
+
   /* Footer */
   .bottom__container {
     .block {
