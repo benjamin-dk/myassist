@@ -274,7 +274,7 @@ function myassist_questions_answers_preprocess_node(&$variables) {
     $node_uri = node_uri($variables['node']);
     // Redirect anonymous users to the login page.
     if (user_is_anonymous()) {
-      $variables['node_url'] = url(
+      $variables['node_url_answer'] = url(
         ANSWER_PATH_LOGIN_PAGE,
         array(
           'query' => array(
@@ -286,7 +286,7 @@ function myassist_questions_answers_preprocess_node(&$variables) {
     // Add a #fragment to direct logged users to the answer form inside
     // the page.
     else {
-      $variables['node_url'] = url(
+      $variables['node_url_answer'] = url(
         $node_uri['path'],
         array(
           'fragment' => 'new-answer-form',
