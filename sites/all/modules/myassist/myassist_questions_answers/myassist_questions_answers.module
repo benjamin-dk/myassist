@@ -195,7 +195,7 @@ function myassist_questions_answers_lock($nid, $unlock=false) {
  * Redirects anonymous users that want to answer a question to login page.
  */
 function myassist_questions_answers_answer_to_login_page() {
-  drupal_set_message('You must login before you can answer a question.', 'status', FALSE);
+  drupal_set_message(t('You must login before you can answer a question.'), 'status', FALSE);
 
   drupal_set_title(t('Log in'));
 
