@@ -35,14 +35,22 @@ function myassist_theme_preprocess_maintenance_page(&$variables, $hook) {
  *   The name of the template being rendered ("html" in this case.)
  */
 function myassist_theme_preprocess_html(&$variables, $hook) {
-  // Add Facebook Pixel tracking code on all pages
-  $fb_markup = '<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=686677638133594&ev=PageView&noscript=1"/></noscript>';
-  $fb_pixel = array(
-    '#type' => 'markup',
-    '#markup' => $fb_markup,
-  );
-  drupal_add_html_head($fb_pixel, 'fb_pixel');
-  drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/facebook_pixel_code.js');
+
+  // Add conditional scripts
+  if (!path_is_admin(current_path())) {
+    // Add Facebook Pixel tracking code on all pages
+    $fb_markup = '<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=686677638133594&ev=PageView&noscript=1"/></noscript>';
+    $fb_pixel = array(
+      '#type' => 'markup',
+      '#markup' => $fb_markup,
+    );
+    drupal_add_html_head($fb_pixel, 'fb_pixel');
+    drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/facebook_pixel_code.js');
+
+    // Add questionnaire popup script and css
+    drupal_add_css(drupal_get_path('theme', 'myassist_theme') . '/css/bpopup.css', array('group' => CSS_THEME, 'type' => 'file', 'weight' => 10));
+    drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/jquery.bpopup.min.js', array('weight' => 0));
+  }
 }
 
 /**
