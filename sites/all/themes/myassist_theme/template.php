@@ -47,9 +47,11 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
     drupal_add_html_head($fb_pixel, 'fb_pixel');
     drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/facebook_pixel_code.js');
 
-    // Add questionnaire popup script and css
-    drupal_add_css(drupal_get_path('theme', 'myassist_theme') . '/css/bpopup.css', array('group' => CSS_THEME, 'type' => 'file', 'weight' => 10));
-    drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/jquery.bpopup.min.js', array('weight' => 0));
+    // Add questionnaire popup script and css. Popup markup is in block /admin/structure/block/manage/block/26/configure - @todo: needs testin
+    // drupal_add_css(drupal_get_path('theme', 'myassist_theme') . '/css/bpopup.css', array('group' => CSS_THEME, 'type' => 'file', 'weight' => 10));
+    // drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/jquery.bpopup.min.js', array('weight' => 0));
+    // drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/popup.js', array('weight' => 0));
+
   }
 }
 
