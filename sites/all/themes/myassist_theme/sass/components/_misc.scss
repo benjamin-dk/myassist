@@ -854,12 +854,20 @@ tr.selected td {
 
 
 /**
- * Leaderboard block
+ * Leaderboard blocks
  */
 
-.block-achievements {
+.block-achievements,
+.block-myassist-achievements {
   .block-title {
     text-transform: uppercase;
+  }
+
+  a.time-selection {
+    margin-right: 1em;
+    &.active {
+      background-color: darken($green, 20%);
+    }
   }
   .achievement-leaderboard {
     thead {
@@ -903,6 +911,9 @@ tr.selected td {
       }
 
     }
+  }
+  .achievement-see-more {
+    text-align: right;
   }
 }
 
