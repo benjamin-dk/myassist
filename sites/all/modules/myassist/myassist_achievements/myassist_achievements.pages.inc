@@ -86,12 +86,12 @@ function myassist_achievements_lb_table($d, $ajax) {
   $output = array(
     'first_para' => array(
       '#type' => 'markup',
-      '#markup' => l('This week', $url_week, array(
+      '#markup' => l(t('This week'), $url_week, array(
         'attributes' => array(
           'id' => 'ajax-this-week',
           'class' => array('use-ajax','greenbtn','time-selection')
         )
-      )) . l('This month', $url_month, array(
+      )) . l(t('This month'), $url_month, array(
         'attributes' => array(
           'id' => 'ajax-this-month',
           'class' => array('use-ajax','greenbtn', 'time-selection')
@@ -112,6 +112,6 @@ function myassist_achievements_lb_ajax_footer() {
   $url_see_more = '/achievements/leaderboard ';
   $output = array(
     '#type' => 'markup',
-    '#markup' => '<div class="achievement-see-more">' . l('View full leaderboard »', $url_see_more) . '</div>');
+    '#markup' => '<div class="achievement-see-more">' . l(t('View full leaderboard »'), $url_see_more) . '</div>');
   return $output;
 }
