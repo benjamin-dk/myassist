@@ -83,7 +83,7 @@ function myassist_theme_preprocess_node(&$variables, $hook) {
   // Add GA conversion JS by node ID of the welcome page after user registration
   if (current_path() == 'node/561') {
     drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/GA_user_registration_conversion.js');
-    drupal_add_js('http://www.googleadservices.com/pagead/conversion.js', 'external');
+    drupal_add_js('https://www.googleadservices.com/pagead/conversion.js', 'external');
   }
 
   $node = $variables['node'];
