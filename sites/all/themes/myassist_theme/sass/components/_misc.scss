@@ -864,7 +864,7 @@ tr.selected td {
   }
 
   a.time-selection {
-    margin-right: 1em;
+    margin-right: .5em;
     &.active {
       background-color: darken($green, 20%);
     }
