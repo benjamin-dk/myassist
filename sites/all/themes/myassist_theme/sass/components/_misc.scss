@@ -159,6 +159,9 @@
   .menu__link[href="/da/chat"] {
     background-image: url(../images/icons/chat.svg);
   }
+  .menu__link[href="/da/podcast"] {
+    background-image: url(../images/icons/podcast.svg);
+  }
   .active {
     background-color: $darkblue;
     color: $white;
