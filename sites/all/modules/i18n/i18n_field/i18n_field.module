@@ -202,6 +202,10 @@ function i18n_field_field_widget_form_alter(&$element, &$form_state, $context) {
     // Entityreference fields using the entityreference_autocomplete widget.
     $alter_element = &$element['target_id'];
   }
+  elseif ($field['type'] == 'node_reference' && isset($element['nid'])) {
+    // The node_reference fields using the entityreference_autocomplete widget.
+    $alter_element = &$element['nid'];
+  }
   else {
     // All other fields.
     $alter_element = &$element;
@@ -224,15 +228,6 @@ function i18n_field_field_widget_form_alter(&$element, &$form_state, $context) {
   // Translate instance to current page language and set to form_state
   // so it will be used for validation messages later.
   $instance_current = i18n_string_object_translate('field_instance', $instance);
-
-  // Normalize translated instance.
-  foreach ($instance_current['settings'] as $setting => $value) {
-    if (!empty($instance_current[$setting])) {
-      $instance_current['settings'][$setting] = $instance_current[$setting];
-      unset($instance_current[$setting]);
-    }
-  }
-
   if (isset($form_state['field'][$instance['field_name']][$langcode]['instance'])) {
     $form_state['field'][$instance['field_name']][$langcode]['instance'] = $instance_current;
   }
@@ -313,32 +308,6 @@ function i18n_field_field_widget_form_alter(&$element, &$form_state, $context) {
       $alter_element['#default_value'] = $translate($instance, $items[$delta]['value'], $i18n_langcode);
     }
   }
-
-  // List of extra translatable properties in field.
-  // Key is a name of $element's property, value is a name of $instance's property.
-  $translatable_properties = array(
-    'field_prefix' => array('settings', 'prefix'),
-    'field_suffix' => array('settings', 'suffix'),
-  );
-  // Translate field properties if set and it is the default one.
-  foreach ($translatable_properties as $element_property => $instance_property) {
-    // Get translated and non-translated value of property.
-    $property_value = drupal_array_get_nested_value($instance, $instance_property);
-    $translated_property_value = drupal_array_get_nested_value($instance_current, $instance_property);
-
-    // If translated and not translated values are different we should replace current value with translated one.
-    if (!empty($translated_property_value) && $translated_property_value != $property_value) {
-      if (!empty($element['#' . $element_property]) && $element['#' . $element_property] == $property_value) {
-        $alter_element['#' . $element_property] = $translated_property_value;
-      }
-      if (!empty($element['value']['#' . $element_property]) && $element['value']['#' . $element_property] == $property_value) {
-        $alter_element['#' . $element_property] = $translated_property_value;
-      }
-      if (!empty($element[0]['#' . $element_property]) && $element[0]['#' . $element_property] == $property_value) {
-        $alter_element[0]['#' . $element_property] = $translated_property_value;
-      }
-    }
-  }
 }
 
 /**
@@ -358,31 +327,6 @@ function i18n_field_field_attach_view_alter(&$output, $context) {
       // Translate field description if set
       if (!empty($instance['description'])) {
         $element['#description'] = i18n_field_translate_property($instance, 'description');
-      }
-
-      // Translate number fields prefix/suffix if exist.
-      if (in_array($element['#field_type'], array('number_integer', 'number_decimal'))) {
-        // Translate instance to current page language.
-        $instance_current = i18n_string_object_translate('field_instance', $instance);
-        if (!empty($instance_current['prefix']) || !empty($instance_current['suffix'])) {
-          if (is_array($context['display']) && isset($context['display']['settings'])) {
-            $settings = $context['display']['settings'];
-          }
-          elseif (isset($instance['display'][$element['#view_mode']])) {
-            $settings = $instance['display'][$element['#view_mode']]['settings'];
-          }
-          else {
-            $settings = $instance['display']['default']['settings'];
-          }
-          foreach ($element['#items'] as $delta => $item) {
-            $output_value = number_format($item['value'], $settings['scale'], $settings['decimal_separator'], $settings['thousand_separator']);
-            $prefixes = !empty($instance['settings']['prefix']) ? array_map('field_filter_xss', explode('|', $instance_current['prefix'])) : array('');
-            $suffixes = !empty($instance['settings']['suffix']) ? array_map('field_filter_xss', explode('|', $instance_current['suffix'])) : array('');
-            $prefix = (count($prefixes) > 1) ? format_plural($item['value'], $prefixes[0], $prefixes[1]) : $prefixes[0];
-            $suffix = (count($suffixes) > 1) ? format_plural($item['value'], $suffixes[0], $suffixes[1]) : $suffixes[0];
-            $element[$delta] = array('#markup' => $prefix . $output_value . $suffix);
-          }
-        }
       }
     }
   }
@@ -504,5 +448,71 @@ function i18n_field_type_info($type = NULL, $property = NULL) {
   }
   else {
     return $info;
+  }
+}
+
+/**
+ * Implements hook_field_info_alter().
+ */
+function i18n_field_field_info_alter(&$field_info) {
+  foreach(array_keys($field_info) as $type) {
+    $field_info[$type]['property_callbacks'][] = 'i18n_field_entity_property_callback';
+  }
+}
+
+/**
+ * Callback to translate entity property info for a fields.
+ *
+ * @see entity_metadata_field_entity_property_info()
+ * @see entity_metadata_field_default_property_callback()
+ * @see i18n_field_i18n_object_info_alter()
+ * @see hook_module_implements_alter()
+ */
+function i18n_field_entity_property_callback(&$info, $entity_type, $field, $instance, $field_type) {
+  global $language;
+
+  // This could create a endless recursion if it's called during rebuilding the
+  // cache for i18n_object_info(). So if the cache of i18n_object_info isn't
+  // available yet we assume the worst case, leave the info alone but trigger a
+  // rebuild of the property when hook_i18n_object_info_alter is invoked. At
+  // that point the info is available and we can rely on it.
+  if (!$info = &drupal_static('i18n_object_info')) {
+    $i18n_field_entity_property_callback_fallback = &drupal_static(__FUNCTION__);
+    $i18n_field_entity_property_callback_fallback = TRUE;
+    return;
+  }
+
+  $name = $field['field_name'];
+  $property = &$info[$entity_type]['bundles'][$instance['bundle']]['properties'][$name];
+  $property['label'] = i18n_field_translate_property($instance, 'label', $language->language);
+}
+
+/**
+ * Implements hook_i18n_object_info_alter().
+ */
+function i18n_field_i18n_object_info_alter(&$info) {
+  if (drupal_static('i18n_field_entity_property_callback')) {
+    if ($info = drupal_static('i18n_object_info')) {
+      // Clean static and permanent cache of the data and then re-run the property
+      // building.
+      drupal_static_reset('entity_get_property_info');
+      cache_clear_all('entity_property_info:' . $GLOBALS['language']->language, 'cache');
+      entity_get_property_info();
+    }
+    else {
+      watchdog('i18n_field', 'Unable to run fall-back handling for entity property translation due missing "i18n_object_info" cache', array(), WATCHDOG_WARNING);
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function i18n_field_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'i18n_object_info_alter') {
+    // Move our hook implementation to the bottom.
+    $group = $implementations['i18n_field'];
+    unset($implementations['i18n_field']);
+    $implementations['i18n_field'] = $group;
   }
 }
