@@ -100,7 +100,7 @@
         $currentForm.bind('change', {'settings': settings}, Drupal.webform.conditionalCheck);
 
         // Trigger all the elements that cause conditionals on this form.
-        Drupal.webform.doConditions($form, settings);
+        Drupal.webform.doConditions($currentForm, settings);
       });
     });
   };
@@ -124,6 +124,54 @@
    * Processes all conditional.
    */
   Drupal.webform.doConditions = function ($form, settings) {
+
+    var stackPointer;
+    var resultStack;
+
+    /**
+     * Initializes an execution stack for a conditional group's rules and
+     * sub-conditional rules.
+     */
+    function executionStackInitialize(andor) {
+      stackPointer = -1;
+      resultStack = [];
+      executionStackPush(andor);
+    }
+
+    /**
+     * Starts a new subconditional for the given and/or operator.
+     */
+    function executionStackPush(andor) {
+      resultStack[++stackPointer] = {
+        results: [],
+        andor: andor,
+      };
+    }
+
+    /**
+     * Adds a rule's result to the current sub-conditional.
+     */
+    function executionStackAccumulate(result) {
+      resultStack[stackPointer]['results'].push(result);
+    }
+
+    /**
+     * Finishes a sub-conditional and adds the result to the parent stack frame.
+     */
+    function executionStackPop() {
+      // Calculate the and/or result.
+      var stackFrame = resultStack[stackPointer];
+      // Pop stack and protect against stack underflow.
+      stackPointer = Math.max(0, stackPointer - 1);
+      var $conditionalResults = stackFrame['results'];
+      var filteredResults = $.map($conditionalResults, function (val) {
+        return val ? val : null;
+      });
+      return stackFrame['andor'] === 'or'
+                ? filteredResults.length > 0
+                : filteredResults.length === $conditionalResults.length;
+    }
+
     // Track what has be set/shown for each target component.
     var targetLocked = [];
 
@@ -131,30 +179,26 @@
       var ruleGroup = settings.ruleGroups[rgid_key];
 
       // Perform the comparison callback and build the results for this group.
-      var conditionalResult = true;
-      var conditionalResults = [];
+      executionStackInitialize(ruleGroup['andor']);
       $.each(ruleGroup['rules'], function (m, rule) {
-        var elementKey = rule['source'];
-        var element = $form.find('.' + elementKey)[0];
-        var existingValue = settings.values[elementKey] ? settings.values[elementKey] : null;
-        conditionalResults.push(window['Drupal']['webform'][rule.callback](element, existingValue, rule['value']));
-      });
+        switch (rule['source_type']) {
+          case 'component':
+            var elementKey = rule['source'];
+            var element = $form.find('.' + elementKey)[0];
+            var existingValue = settings.values[elementKey] ? settings.values[elementKey] : null;
+            executionStackAccumulate(window['Drupal']['webform'][rule.callback](element, existingValue, rule['value']));
+            break;
 
-      // Filter out false values.
-      var filteredResults = [];
-      for (var i = 0; i < conditionalResults.length; i++) {
-        if (conditionalResults[i]) {
-          filteredResults.push(conditionalResults[i]);
+          case 'conditional_start':
+            executionStackPush(rule['andor']);
+            break;
+
+          case 'conditional_end':
+            executionStackAccumulate(executionStackPop());
+            break;
         }
-      }
-
-      // Calculate the and/or result.
-      if (ruleGroup['andor'] === 'or') {
-        conditionalResult = filteredResults.length > 0;
-      }
-      else {
-        conditionalResult = filteredResults.length === conditionalResults.length;
-      }
+      });
+      var conditionalResult = executionStackPop();
 
       $.each(ruleGroup['actions'], function (aid, action) {
         var $target = $form.find('.' + action['target']);
@@ -167,6 +211,9 @@
                                       : $target.find(':input').addClass('webform-conditional-disabled');
               $targetElements.webformProp('disabled', !actionResult);
               $target.toggleClass('webform-conditional-hidden', !actionResult);
+              // Anything hidden needs to be disabled so that child elements of
+              // fieldsets do not block submission by being required.
+              $target.webformProp('disabled', !actionResult);
               if (actionResult) {
                 $target.show();
               }
@@ -175,8 +222,12 @@
                 // Record that the target was hidden.
                 targetLocked[action['target']] = 'hide';
               }
+              if ($target.is('tr')) {
+                Drupal.webform.restripeTable($target.closest('table').first());
+              }
             }
             break;
+
           case 'require':
             var $requiredSpan = $target.find('.form-required, .form-optional').first();
             if (actionResult != $requiredSpan.hasClass('form-required')) {
@@ -195,18 +246,31 @@
               Drupal.attachBehaviors($requiredSpan);
             }
             break;
+
           case 'set':
             var isLocked = targetLocked[action['target']];
             var $texts = $target.find("input:text,textarea,input[type='email']");
             var $selects = $target.find('select,select option,input:radio,input:checkbox');
+            var $markups = $target.filter('.webform-component-markup');
             if (actionResult) {
               var multiple = $.map(action['argument'].split(','), $.trim);
               $selects.webformVal(multiple);
               $texts.val([action['argument']]);
               // A special case is made for markup. It is sanitized with filter_xss_admin on the server.
               // otherwise text() should be used to avoid an XSS vulnerability. text() however would
-              // preclude the use of tags like <strong> or <a>
-              $target.filter('.webform-component-markup').html(action['argument']);
+              // preclude the use of tags like <strong> or <a>.
+              $markups.html(action['argument']);
+            }
+            else {
+              // Markup not set? Then restore original markup as provided in
+              // the attribute data-webform-markup.
+              $markups.each(function () {
+                var $this = $(this);
+                var original = $this.data('webform-markup');
+                if (original !== undefined) {
+                  $this.html(original);
+                }
+              });
             }
             if (!isLocked) {
               // If not previously hidden or set, disable the element readonly or readonly-like behavior.
@@ -217,11 +281,11 @@
             break;
         }
       }); // End look on each action for one conditional
-    }); // End loop on each conditional
+    }); // End loop on each conditional.
   };
 
   /**
-   * Event handler to prevent propogation of events, typically click for disabling
+   * Event handler to prevent propagation of events, typically click for disabling
    * radio and checkboxes.
    */
   Drupal.webform.stopEvent = function () {
@@ -436,12 +500,14 @@
 
   /**
    * Utility function to compare values of a select component.
+   *
    * @param string a
    *   First select option key to compare
    * @param string b
    *   Second select option key to compare
    * @param array options
    *   Associative array where the a and b are within the keys
+   *
    * @return integer based upon position of $a and $b in $options
    *   -N if $a above (<) $b
    *   0 if $a = $b
@@ -454,18 +520,7 @@
     });
     var a_position = optionList.indexOf(a);
     var b_position = optionList.indexOf(b);
-    if (a_position < 0 && b_position < 0) {
-      return null;
-    }
-    else if (a_position < 0) {
-      return 1;
-    }
-    else if (b_position < 0) {
-      return -1;
-    }
-    else {
-      return a_position - b_position;
-    }
+    return (a_position < 0 || b_position < 0) ? null : a_position - b_position;
   };
 
   /**
@@ -516,6 +571,7 @@
         case 'array':
           value = existingValue;
           break;
+
         case 'string':
           value.push(existingValue);
           break;
@@ -525,7 +581,7 @@
   };
 
   /**
-   * Utility function to calculate a millisecond timestamp from a time field.
+   * Utility function to calculate a second-based timestamp from a time field.
    */
   Drupal.webform.dateValue = function (element, existingValue) {
     var value = false;
@@ -626,6 +682,21 @@
       }
     });
     return this;
+  };
+
+  /**
+   * Given a table's DOM element, restripe the odd/even classes.
+   */
+  Drupal.webform.restripeTable = function (table) {
+    // :even and :odd are reversed because jQuery counts from 0 and
+    // we count from 1, so we're out of sync.
+    // Match immediate children of the parent element to allow nesting.
+    $('> tbody > tr, > tr', table)
+      .filter(':visible:odd').filter('.odd')
+        .removeClass('odd').addClass('even')
+      .end().end()
+      .filter(':visible:even').filter('.even')
+        .removeClass('even').addClass('odd');
   };
 
 })(jQuery);
