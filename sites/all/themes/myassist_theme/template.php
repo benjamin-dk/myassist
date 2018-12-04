@@ -50,7 +50,7 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
     $cookiebot_markup = '<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4701a8cf-157e-4aa1-899c-83cff9f01318" type="text/javascript" async></script>';
     $cookiebot = array(
       '#type' => 'markup',
-      '#markup' => $cookiebot,
+      '#markup' => $cookiebot_markup,
     );
     drupal_add_html_head($cookiebot, 'cookiebot');
 
