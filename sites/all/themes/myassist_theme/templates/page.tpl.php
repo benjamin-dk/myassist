@@ -99,6 +99,7 @@
 </div>
 
 <div class="bottom__container">
+  <?php print render($page['bottom']); ?>
   <div id="cfdp-website-links">
     <div class="cfdp-website-link-items">
       <h2 class="block-title">CfDP drifter og udvikler følgende ungerådgivninger</h2>
@@ -108,5 +109,4 @@
       <div class="cfdp-website-link-item last"><a href="https://gruppechat.dk"><img src="/sites/all/themes/myassist_theme/images/gruppechat-dark.png" alt="gruppechat" /></a></div>
     </div>
   </div>
-  <?php print render($page['bottom']); ?>
 </div>
