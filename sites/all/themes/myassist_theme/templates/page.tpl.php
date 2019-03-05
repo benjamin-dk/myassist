@@ -53,6 +53,23 @@
 
     </div>
   </header>
+  <?php if ($podcast_nid): ?>
+    <div class="podcast-header">
+      <?php print render($title_prefix); ?>
+      <div class="podcast-header-title">
+        <div class="podcast-header-title-wrapper">
+          <?php if ($title): ?>
+            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+          <?php endif; ?>
+          <?php if ($podcast_subtitle): ?>
+            <h2 class="subtitle" id="page-subtitle"><?php print $podcast_subtitle ; ?></h2>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
+        </div>
+      </div>
+      <?php print render($page['content']['system_main']['nodes'][$podcast_nid]['field_podcast_header_img']); ?>
+    </div>
+  <?php endif; ?>
 
   <?php print render($page['highlighted']); ?>
 
@@ -61,7 +78,7 @@
       <?php print $breadcrumb; ?>
       <a id="main-content"></a>
       <?php print render($title_prefix); ?>
-      <?php if ($title): ?>
+      <?php if ($title && !$podcast_nid): ?>
         <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>
