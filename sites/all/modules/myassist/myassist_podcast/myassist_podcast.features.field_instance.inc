@@ -96,7 +96,61 @@ function myassist_podcast_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 3,
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-podcast-field_podcast_archive'.
+  $field_instances['node-podcast-field_podcast_archive'] = array(
+    'bundle' => 'podcast',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Markér dette felt, hvis siden er arkiv-side.',
+    'display' => array(
+      'answers_full_node' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'user_activity_list_entry' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_podcast_archive',
+    'label' => 'Arkiv-side',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 2,
     ),
   );
 
@@ -141,7 +195,7 @@ function myassist_podcast_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'alt_field' => 1,
-      'default_image' => 16510,
+      'default_image' => 16978,
       'file_directory' => 'podcast',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '10 MB',
@@ -158,7 +212,7 @@ function myassist_podcast_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 2,
+      'weight' => 3,
     ),
   );
 
@@ -226,9 +280,11 @@ function myassist_podcast_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Arkiv-side');
   t('Billede');
   t('Body');
   t('Comment');
+  t('Markér dette felt, hvis siden er arkiv-side.');
   t('Undertitel');
   t('Undertitlen bruges på arkivsiden');
 
