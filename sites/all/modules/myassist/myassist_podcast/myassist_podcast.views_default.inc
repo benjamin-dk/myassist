@@ -106,12 +106,15 @@ function myassist_podcast_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'podcast' => 'podcast',
   );
-  /* Filter criterion: Content: Nid */
-  $handler->display->display_options['filters']['nid']['id'] = 'nid';
-  $handler->display->display_options['filters']['nid']['table'] = 'node';
-  $handler->display->display_options['filters']['nid']['field'] = 'nid';
-  $handler->display->display_options['filters']['nid']['operator'] = '!=';
-  $handler->display->display_options['filters']['nid']['value']['value'] = '1922';
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Arkiv-side (field_podcast_archive) */
+  $handler->display->display_options['filters']['field_podcast_archive_value']['id'] = 'field_podcast_archive_value';
+  $handler->display->display_options['filters']['field_podcast_archive_value']['table'] = 'field_data_field_podcast_archive';
+  $handler->display->display_options['filters']['field_podcast_archive_value']['field'] = 'field_podcast_archive_value';
+  $handler->display->display_options['filters']['field_podcast_archive_value']['operator'] = 'not';
+  $handler->display->display_options['filters']['field_podcast_archive_value']['value'] = array(
+    1 => '1',
+  );
 
   /* Display: Podcast list */
   $handler = $view->new_display('block', 'Podcast list', 'block_1');
