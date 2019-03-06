@@ -69,13 +69,21 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("page" in this case.)
  */
-/*
+
 function myassist_theme_preprocess_page(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
-  dpm($variables, $hook);
-  //drupal_add_js(  );
+  $node = menu_get_object();
+  if ($node->type == 'podcast') {
+    $nid = $node->nid;
+    $variables['podcast_nid'] = $nid;
+
+    $node = node_load($nid);
+    $field = field_get_items('node', $node, 'field_podcast_subtitle');
+    $subtitle = field_view_value('node', $node, 'field_podcast_subtitle', $field[0]);
+    if ($subtitle['#markup'] !== "") {
+      $variables['podcast_subtitle'] = $subtitle['#markup'];
+    }
+  }
 }
-*/
 
 /**
  * Override or insert variables into the node templates.

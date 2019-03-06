@@ -767,7 +767,6 @@ tr.selected td {
   }
 }
 
-
 /**
  * Avatar
  */
@@ -781,8 +780,12 @@ tr.selected td {
   }
 }
 
-
-
+/**
+ * Views
+ */
+a.views-more-link:link {
+  text-decoration: underline;
+}
 /**
  * "Ask a question" button
  */
