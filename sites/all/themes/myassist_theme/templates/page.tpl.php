@@ -12,13 +12,13 @@
 
   <header class="header" id="header" role="banner">
     <div class="header__container">
-      
+
       <?php if ($logo): ?>
         <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" class="header__logo" id="logo">
           <img src="/sites/all/themes/myassist_theme/logo.svg" alt="<?php print t('Home'); ?>" class="header__logo-image" />
         </a>
       <?php endif; ?>
-      
+
       <?php if ($site_name || $site_slogan): ?>
         <div class="header__name-and-slogan" id="name-and-slogan">
           <?php if ($site_name): ?>
@@ -26,15 +26,15 @@
               <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" class="header__site-link" rel="home"><span><?php print $site_name; ?></span></a>
             </h1>
           <?php endif; ?>
-  
+
           <?php if ($site_slogan): ?>
             <div class="header__site-slogan" id="site-slogan"><?php print $site_slogan; ?></div>
           <?php endif; ?>
         </div>
       <?php endif; ?>
-      
+
       <?php print render($page['header']); ?>
-      
+
       <?php if ($secondary_menu): ?>
         <nav class="header__secondary-menu" id="secondary-menu" role="navigation">
           <?php print theme('links__system_secondary_menu', array(
@@ -53,6 +53,23 @@
 
     </div>
   </header>
+  <?php if ($podcast_nid): ?>
+    <div class="podcast-header">
+      <?php print render($title_prefix); ?>
+      <div class="podcast-header-title">
+        <div class="podcast-header-title-wrapper">
+          <?php if ($title): ?>
+            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+          <?php endif; ?>
+          <?php if ($podcast_subtitle): ?>
+            <h2 class="subtitle" id="page-subtitle"><?php print $podcast_subtitle ; ?></h2>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
+        </div>
+      </div>
+      <?php print render($page['content']['system_main']['nodes'][$podcast_nid]['field_podcast_header_img']); ?>
+    </div>
+  <?php endif; ?>
 
   <?php print render($page['highlighted']); ?>
 
@@ -61,7 +78,7 @@
       <?php print $breadcrumb; ?>
       <a id="main-content"></a>
       <?php print render($title_prefix); ?>
-      <?php if ($title): ?>
+      <?php if ($title && !$podcast_nid): ?>
         <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>
@@ -74,7 +91,7 @@
       <?php print render($page['content']); ?>
       <?php print $feed_icons; ?>
     </div>
-      
+
     <?php
       // Render the sidebars to see if there's anything in them.
       $sidebar_first  = render($page['sidebar_first']);
@@ -83,7 +100,7 @@
 
     <?php if ($sidebar_first || $sidebar_second): ?>
       <aside class="sidebars">
-        
+
         <?php print $sidebar_first; ?>
         <?php print $sidebar_second; ?>
 
@@ -91,13 +108,22 @@
     <?php endif; ?>
 
   </div>
-  
+
   <?php print render($page['navigation']); ?>
-  
+
   <?php print render($page['footer']); ?>
 
 </div>
 
 <div class="bottom__container">
   <?php print render($page['bottom']); ?>
+  <div id="cfdp-website-links">
+    <div class="cfdp-website-link-items">
+      <h2 class="block-title">Kender du vores andre rådgivninger?</h2>
+      <div class="cfdp-website-link-item first"><a href="https://cyberhus.dk"><img src="/sites/all/themes/myassist_theme/images/cyberhus-dark.png" alt="cyberhus" /></a></div>
+      <div class="cfdp-website-link-item middle"><a href="https://netstof.dk"><img src="/sites/all/themes/myassist_theme/images/netstof-dark.png" alt="netstof" /></a></div>
+      <div class="cfdp-website-link-item middle"><a href="https://mitassist.dk/"><img src="/sites/all/themes/myassist_theme/images/mitassist-dark.png" alt="mitassist" /></a></div>
+      <div class="cfdp-website-link-item last"><a href="https://gruppechat.dk"><img src="/sites/all/themes/myassist_theme/images/gruppechat-dark.png" alt="gruppechat" /></a></div>
+    </div>
+  </div>
 </div>

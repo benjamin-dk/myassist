@@ -46,12 +46,18 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
     );
     drupal_add_html_head($fb_pixel, 'fb_pixel');
     drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/facebook_pixel_code.js');
+    /* Add cookiebot script to head. */
+    $cookiebot_markup = '<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4701a8cf-157e-4aa1-899c-83cff9f01318" type="text/javascript" async></script>';
+    $cookiebot = array(
+      '#type' => 'markup',
+      '#markup' => $cookiebot_markup,
+    );
+    drupal_add_html_head($cookiebot, 'cookiebot');
 
     // Add questionnaire popup script and css. Popup markup is in block /admin/structure/block/manage/block/26/configure - @todo: needs testin
     // drupal_add_css(drupal_get_path('theme', 'myassist_theme') . '/css/bpopup.css', array('group' => CSS_THEME, 'type' => 'file', 'weight' => 10));
     // drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/jquery.bpopup.min.js', array('weight' => 0));
     // drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/popup.js', array('weight' => 0));
-
   }
 }
 
@@ -63,13 +69,21 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
  * @param $hook
  *   The name of the template being rendered ("page" in this case.)
  */
-/*
+
 function myassist_theme_preprocess_page(&$variables, $hook) {
-  $variables['sample_variable'] = t('Lorem ipsum.');
-  dpm($variables, $hook);
-  //drupal_add_js(  );
+  $node = menu_get_object();
+  if ($node->type == 'podcast') {
+    $nid = $node->nid;
+    $variables['podcast_nid'] = $nid;
+
+    $node = node_load($nid);
+    $field = field_get_items('node', $node, 'field_podcast_subtitle');
+    $subtitle = field_view_value('node', $node, 'field_podcast_subtitle', $field[0]);
+    if ($subtitle['#markup'] !== "") {
+      $variables['podcast_subtitle'] = $subtitle['#markup'];
+    }
+  }
 }
-*/
 
 /**
  * Override or insert variables into the node templates.
