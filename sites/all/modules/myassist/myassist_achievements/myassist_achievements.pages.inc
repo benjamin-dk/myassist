@@ -8,7 +8,7 @@
  * @return
  *   Rendered output
  */
-function myassist_achievements_lb_table($d, $ajax) {
+function myassist_achievements_lb_table($d = NULL) {
   global $base_url;
   $achievers = array();
 
