@@ -664,7 +664,7 @@ function myassist_achievements_block_view($delta = '') {
       $block['subject'] = t('Leaderboard, recent activity');
 
       $block['content'] = array(
-        '#markup' => '<div id="load-leaderboard-lb-block">' . myassist_achievements_lb_table() . '</div>',
+        '#markup' => '<div id="load-leaderboard-lb-block">' . myassist_achievements_lb_table(30) . '</div>',
         '#attached' => array(
           'js' => array(
             drupal_get_path('module', 'myassist_achievements') . '/js/myassist_achievements.js',

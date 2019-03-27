@@ -5,6 +5,8 @@
 
 # Ignore configuration files that may contain sensitive information.
 sites/*/*settings*.php
+*.sql
+*.sql.gz
 
 # Ignore paths that contain generated content.
 files/
