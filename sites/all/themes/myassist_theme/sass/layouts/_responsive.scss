@@ -199,16 +199,13 @@ body {
 
     /* Podcasts */
     .podcast-header-title {
-      //padding-left: 2em;
-      text-align: left;
     }
     .podcast-header-title-wrapper {
-      text-align: left;
       h1 {
-        font-size: $u*1.25;
+        font-size: $u*1;
       }
       h2 {
-        font-size: $u;
+        font-size: $u*.8;
       }
       h1.page__title, 
       h2.subtitle {
