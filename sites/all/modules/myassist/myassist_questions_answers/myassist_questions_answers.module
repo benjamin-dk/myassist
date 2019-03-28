@@ -270,6 +270,7 @@ function myassist_questions_answers_uf_open_to_posts() {
  * Implements hook_preprocess_HOOK().
  */
 function myassist_questions_answers_preprocess_node(&$variables) {
+  $variables['locked'] = (isset($variables['locked']) ? $variables['locked'] : NULL);
   if ($variables['type'] == 'answers_question' && !$variables['locked'] && $variables['view_mode'] !== 'user_activity_list_entry') {
     $node_uri = node_uri($variables['node']);
     // Redirect anonymous users to the login page.
