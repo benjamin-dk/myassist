@@ -133,6 +133,11 @@ body {
 }
 
 @media all and (max-width: $u*35) {
+  .captcha {
+    .form-text {
+      max-width: 250px;
+    }
+  }
   .header__logo-image {
     margin-left: 0.5em;
     margin-right: 0.5em;
@@ -193,11 +198,8 @@ body {
     }
 
     /* Podcasts */
-    .podcast-header .field-type-image img {
-      max-width: 150%;
-    }
     .podcast-header-title {
-      margin-left: 2em;
+      //padding-left: 2em;
       text-align: left;
     }
     .podcast-header-title-wrapper {

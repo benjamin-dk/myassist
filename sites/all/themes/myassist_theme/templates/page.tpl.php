@@ -74,6 +74,10 @@
   <?php print render($page['highlighted']); ?>
 
   <div id="main">
+    <?php if ($podcast_nid && !$is_podcast_archive): ?>
+      <?php $breadcrumb = '<div class="breadcrumb"><a href="/podcasts"><< ' 
+        . t('See all podcasts') .'</a></div>'; ?>
+    <?php endif; ?>
     <div id="content" class="column" role="main">
       <?php print $breadcrumb; ?>
       <a id="main-content"></a>
