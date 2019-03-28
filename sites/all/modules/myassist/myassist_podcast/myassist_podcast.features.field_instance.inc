@@ -146,10 +146,8 @@ function myassist_podcast_field_default_field_instances() {
     'widget' => array(
       'active' => 1,
       'module' => 'options',
-      'settings' => array(
-        'display_label' => 0,
-      ),
-      'type' => 'options_onoff',
+      'settings' => array(),
+      'type' => 'options_buttons',
       'weight' => 2,
     ),
   );
@@ -195,7 +193,7 @@ function myassist_podcast_field_default_field_instances() {
     'required' => 0,
     'settings' => array(
       'alt_field' => 1,
-      'default_image' => 16978,
+      'default_image' => 16510,
       'file_directory' => 'podcast',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '10 MB',
