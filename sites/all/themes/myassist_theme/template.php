@@ -74,10 +74,10 @@ function myassist_theme_preprocess_page(&$variables, $hook) {
   $node = menu_get_object();
   $variables['podcast_nid'] = NULL;
   $variables['is_podcast_archive'] = NULL;
-  if (isset($node->field_podcast_archive)) {
+  if (isset($node) && isset($node->field_podcast_archive)) {
     $is_podcast_archive = ($node->field_podcast_archive && $node->field_podcast_archive['und'][0]['value'] == "1") ? true : false;
   }
-  if ($node->type == 'podcast') {
+  if (isset($node) && $node->type == 'podcast') {
     $nid = $node->nid;
     $variables['podcast_nid'] = $nid;
     $variables['is_podcast_archive'] = $is_podcast_archive;
