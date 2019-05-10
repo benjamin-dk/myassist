@@ -126,10 +126,18 @@ body {
 
 @media all and (max-width: 480px) {
   #page {
+    /* Podcasts and pages with generic header img */
     .podcast-header-title-wrapper,
     .generic-header-img-title-wrapper {
       h2 {
         font-size: $u*.5;
+      }
+      h1 {
+        font-size: $u*.7;
+      }
+      h1.page__title, 
+      h2.subtitle {
+        box-shadow: 6px 0 0 0 #ffffff,-6px 0 0 0 #ffffff;
       }
     }
   }
@@ -213,20 +221,6 @@ body {
     /* Main */
     #main {
 
-    }
-
-    /* Podcasts and pages with generic header img */
-    .podcast-header-title {
-    }
-    .podcast-header-title-wrapper,
-    .generic-header-img-title-wrapper {
-      h1 {
-        font-size: $u*1;
-      }
-      h1.page__title, 
-      h2.subtitle {
-        box-shadow: 6px 0 0 0 #ffffff,-6px 0 0 0 #ffffff;
-      }
     }
   }
 }
