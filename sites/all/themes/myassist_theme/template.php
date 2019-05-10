@@ -102,11 +102,17 @@ function myassist_theme_set_header_img_vars(&$variables) {
       $field = field_get_items('node', $node, 'field_podcast_subtitle');
       $subtitle = field_view_value('node', $node, 'field_podcast_subtitle', $field[0]);
       if ($subtitle['#markup'] !== "") {
-        $variables['podcast_subtitle'] = $subtitle['#markup'];
+        $variables['header_img_subtitle'] = $subtitle['#markup'];
       }
       break;
     case 'page':
     case 'blog':
+      $node = node_load($nid);
+      $field = field_get_items('node', $node, 'field_header_img_subtitle');
+      $subtitle = field_view_value('node', $node, 'field_header_img_subtitle', $field[0]);
+      if ($subtitle['#markup'] !== "") {
+        $variables['header_img_subtitle'] = $subtitle['#markup'];
+      }
       $variables['generic_header_img_nid'] = $nid;
       break;
     default:
