@@ -245,7 +245,7 @@ function answers_node_view($node, $view_mode = 'full') {
  * Implements hook_exit.
  */
 function answers_exit() {
-  $router_item  = function_exists(menu_get_object()) ? menu_get_object(): NULL;
+  $router_item  = function_exists('menu_get_object') ? menu_get_object(): NULL;
   if (isset($router_item) && $router_item->type == "answers_question") {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
