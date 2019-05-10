@@ -71,6 +71,21 @@
     </div>
   <?php endif; ?>
 
+  <?php if ($generic_header_img_nid): ?>
+    <div class="generic-header-img">
+      <?php print render($title_prefix); ?>
+      <div class="generic-header-img-title">
+        <div class="generic-header-img-title-wrapper">
+          <?php if ($title): ?>
+            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
+        </div>
+      </div>
+      <?php print render($page['content']['system_main']['nodes'][$generic_header_img_nid]['field_generic_header_img']); ?>
+    </div>
+  <?php endif; ?>
+
   <?php print render($page['highlighted']); ?>
 
   <div id="main">
@@ -82,7 +97,7 @@
       <?php print $breadcrumb; ?>
       <a id="main-content"></a>
       <?php print render($title_prefix); ?>
-      <?php if ($title && !$podcast_nid): ?>
+      <?php if ($title && !$podcast_nid && !$generic_header_img_nid): ?>
         <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>

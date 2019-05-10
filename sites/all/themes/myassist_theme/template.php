@@ -71,25 +71,48 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
  */
 
 function myassist_theme_preprocess_page(&$variables, $hook) {
+  myassist_theme_set_header_img_vars($variables);
+}
+
+/**
+ * Set header image related variables for templating 
+ *
+ * @param $variables
+ *   An array of variables to pass to the theme template.
+ */
+function myassist_theme_set_header_img_vars(&$variables) {
   $node = menu_get_object();
-  $variables['podcast_nid'] = NULL;
-  $variables['is_podcast_archive'] = NULL;
-  $variables['podcast_subtitle'] = NULL;
-  if (isset($node) && isset($node->field_podcast_archive)) {
+  // Exit if we are not on a node
+  if (!isset($node)) {
+    return;
+  }
+
+  $nid = $node->nid;
+
+  if (isset($node->field_podcast_archive)) {
     $is_podcast_archive = ($node->field_podcast_archive && $node->field_podcast_archive['und'][0]['value'] == "1") ? true : false;
   }
-  if (isset($node) && $node->type == 'podcast') {
-    $nid = $node->nid;
-    $variables['podcast_nid'] = $nid;
-    $variables['is_podcast_archive'] = $is_podcast_archive;
 
-    $node = node_load($nid);
-    $field = field_get_items('node', $node, 'field_podcast_subtitle');
-    $subtitle = field_view_value('node', $node, 'field_podcast_subtitle', $field[0]);
-    if ($subtitle['#markup'] !== "") {
-      $variables['podcast_subtitle'] = $subtitle['#markup'];
-    }
+  switch ($node->type) {
+    case 'podcast':
+      $variables['podcast_nid'] = $nid;
+      $variables['is_podcast_archive'] = $is_podcast_archive;
+
+      $node = node_load($nid);
+      $field = field_get_items('node', $node, 'field_podcast_subtitle');
+      $subtitle = field_view_value('node', $node, 'field_podcast_subtitle', $field[0]);
+      if ($subtitle['#markup'] !== "") {
+        $variables['podcast_subtitle'] = $subtitle['#markup'];
+      }
+      break;
+    case 'page':
+    case 'blog':
+      $variables['generic_header_img_nid'] = $nid;
+      break;
+    default:
   }
+  /* Related to the header image on front page, pages og blogposts */
+
 }
 
 /**

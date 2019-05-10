@@ -825,7 +825,8 @@ a.views-more-link:link {
  * FAQ
  */
 
-.node-readmore a {
+.node-readmore a,
+a.views-more-link {
   @extend .btn;
 }
 .view-faq {

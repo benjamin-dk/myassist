@@ -125,11 +125,25 @@ body {
  */
 
 @media all and (max-width: 480px) {
-
+  #page {
+    .podcast-header-title-wrapper,
+    .generic-header-img-title-wrapper {
+      h2 {
+        font-size: $u*.5;
+      }
+    }
+  }
 }
 
 @media all and (min-width: 480px) {
-   
+  #page {
+    .podcast-header-title-wrapper,
+    .generic-header-img-title-wrapper {
+      h2 {
+        font-size: $u*.8;
+      }
+    }
+  }
 }
 
 @media all and (max-width: $u*35) {
@@ -159,8 +173,12 @@ body {
       }
     }
   }
-  .node-type-podcast .region-highlighted {
-    padding-bottom: 0;
+  .node-type-podcast,
+  .node-type-blog,
+  .node-type-page {
+    .region-highlighted {
+      padding-bottom: 0;
+    }
   }
   #page {
 
@@ -197,15 +215,13 @@ body {
 
     }
 
-    /* Podcasts */
+    /* Podcasts and pages with generic header img */
     .podcast-header-title {
     }
-    .podcast-header-title-wrapper {
+    .podcast-header-title-wrapper,
+    .generic-header-img-title-wrapper {
       h1 {
         font-size: $u*1;
-      }
-      h2 {
-        font-size: $u*.8;
       }
       h1.page__title, 
       h2.subtitle {
@@ -226,6 +242,17 @@ body {
 
     > div:first-of-type {
       padding-top: $u*5;
+      &.podcast-header,
+      &.generic-header-img {
+        padding-top: $u*4;
+      }
+    }
+
+    .podcast-header-title-wrapper,
+    .generic-header-img-title-wrapper {
+      h2 {
+        font-size: $u*1.18;
+      }
     }
 
     .region-highlighted {
@@ -356,13 +383,15 @@ body {
 @media all and (min-width: $u*55) {
   
   /* General layout */
-
   #page {
     padding: 0;
     > div:first-of-type {
       padding-top: $u*7.5;
 
       &.podcast-header {
+        padding-top: $u*6.5;
+      }
+      &.generic-header-img {
         padding-top: $u*4;
       }
     }
@@ -526,6 +555,26 @@ body {
       clear: both;
     }
   }
+
+  /* Blog, page and podcast */
+  .node-type-podcast,
+  .node-type-blog,
+  .node-type-page {
+    #page .region-highlighted {
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .hero {
+      width: 100%;
+      max-width: 1920px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+ 
 
   /* Footer */
   .bottom__container {
