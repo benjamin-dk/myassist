@@ -8,7 +8,8 @@ class myassist_questions_answers_views_handler_latest_activity extends views_han
 
   function query() {
     $sortname = $this->view->exposed_raw_input['sort_by'];
-    if ($this->view->display_handler->handlers['sort'][$sortname] == $this) {
+
+    if (isset($sortname) && $this->view->display_handler->handlers['sort'][$sortname] == $this) {
     
       $this->ensure_my_table();
 

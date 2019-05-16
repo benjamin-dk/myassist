@@ -53,7 +53,7 @@
 
     </div>
   </header>
-  <?php if ($podcast_nid): ?>
+  <?php if (isset($podcast_nid)): ?>
     <div class="podcast-header">
       <?php print render($title_prefix); ?>
       <div class="podcast-header-title">
@@ -72,7 +72,7 @@
     </div>
   <?php endif; ?>
 
-  <?php if ($generic_header_img_nid): ?>
+  <?php if (isset($generic_header_img_nid)): ?>
     <div class="generic-header-img">
       <?php print render($title_prefix); ?>
       <div class="generic-header-img-title">
@@ -93,7 +93,7 @@
   <?php print render($page['highlighted']); ?>
 
   <div id="main">
-    <?php if ($podcast_nid && !$is_podcast_archive): ?>
+    <?php if (isset($podcast_nid) && !$is_podcast_archive): ?>
       <?php $breadcrumb = '<div class="breadcrumb"><a href="/podcasts"><< ' 
         . t('See all podcasts') .'</a></div>'; ?>
     <?php endif; ?>
@@ -101,7 +101,7 @@
       <?php print $breadcrumb; ?>
       <a id="main-content"></a>
       <?php print render($title_prefix); ?>
-      <?php if ($title && !$podcast_nid && !$generic_header_img_nid): ?>
+      <?php if ($title && !$podcast_nid && !isset($generic_header_img_nid)): ?>
         <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
       <?php endif; ?>
       <?php print render($title_suffix); ?>
