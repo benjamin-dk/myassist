@@ -80,7 +80,7 @@
           <?php if ($title): ?>
             <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
           <?php endif; ?>
-          <?php if ($header_img_subtitle): ?>
+          <?php if (isset($header_img_subtitle)): ?>
             <h2 class="subtitle" id="page-subtitle"><?php print $header_img_subtitle ; ?></h2>
           <?php endif; ?>
           <?php print render($title_suffix); ?>
