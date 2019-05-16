@@ -13,7 +13,7 @@ class myassist_questions_answers_views_handler_latest_activity extends views_han
     
       $this->ensure_my_table();
 
-      if (!$this->query->relationships['related_answers']) {
+      if (!isset($this->query->relationships['related_answers'])) {
         $join = new views_join();
         $join->table = 'field_revision_answers_related_question';
         $join->field = 'answers_related_question_target_id';

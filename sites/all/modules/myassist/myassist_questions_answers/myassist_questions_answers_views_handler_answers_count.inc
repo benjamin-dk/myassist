@@ -8,7 +8,7 @@ class myassist_questions_answers_views_handler_answers_count extends views_handl
 
   function query() {
     $sortname = isset($this->view->exposed_raw_input['sort_by']) ? $this->view->exposed_raw_input['sort_by'] : NULL;
-    if ($this->view->display_handler->handlers['sort'][$sortname] == $this) {
+    if (isset($sortname) && $this->view->display_handler->handlers['sort'][$sortname] == $this) {
       $this->ensure_my_table();
 
       if (!isset($this->query->relationships['related_answers'])) {
