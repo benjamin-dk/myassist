@@ -7,7 +7,7 @@
 class myassist_questions_answers_views_handler_latest_activity extends views_handler_sort {
 
   function query() {
-    $sortname = $this->view->exposed_raw_input['sort_by'];
+    $sortname = isset($this->view->exposed_raw_input['sort_by']) ? $this->view->exposed_raw_input['sort_by'] : NULL;
 
     if (isset($sortname) && $this->view->display_handler->handlers['sort'][$sortname] == $this) {
     
