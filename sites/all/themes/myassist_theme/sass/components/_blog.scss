@@ -64,16 +64,20 @@
       padding: 0;
       li {
         list-style-type: none;
+        margin-bottom: $u*.8;
         .user-picture {
           display: inline-block;
           width: 18%;
+          vertical-align: middle;
           img {
             border-radius: 50%;
           }
         }
         > a {
           display: inline-block;
-          width: 80%;
+          margin-left: 5px;
+          width: 75%;
+          vertical-align: middle;
         }
       }
     }

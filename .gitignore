@@ -24,3 +24,4 @@ sites/all/modules/stage_file_proxy
 
 # Symlink to opeka source code should be configured locally
 /sites/all/modules/opeka
+sites/all/themes/myassist_theme/images/.DS_Store
