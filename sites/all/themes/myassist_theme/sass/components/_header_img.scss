@@ -33,8 +33,9 @@
   .generic-header-img-title,
   .podcast-header-title {
     position: absolute;    
-    height: 85%;
+    height: 100%;
     text-align: center;
+    margin-top: 2em;
     width: 100%;
     z-index: 2;
   }
@@ -62,7 +63,6 @@
       display: inline-block;
     }
     h2.subtitle {
-      display: table;
       margin: 0 auto;
     }
   }
