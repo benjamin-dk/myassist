@@ -6,55 +6,9 @@
   #main {
     margin-top: $u;
   }
-  .podcast-header {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-  }
-  .podcast-header-title {
-    position: absolute;    
-    height: 85%;
-    text-align: center;
-    width: 100%;
-  }
-  .podcast-header-title:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-  .podcast-header-title-wrapper {
-    display: inline-block;
-    max-width: 400px;   
-    h1.page__title,
-    h2.subtitle {
-      background: #ffffff;
-      box-shadow: 13px 0 0 0 #ffffff,-13px 0 0 0 #ffffff;
-      display: inline-block;
-      padding: $u*0.4 0;
-      margin-bottom: $u*.2;
-    }
-    h2.subtitle {
-      display: block;
-    }
-  }
-
-  .podcast-header .field-type-image img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-  }
 
   /* Archive page */
   .view-podcasts {
-    .views-field-title a {
-      // background: #ffffff;
-      // box-shadow: 13px 0 0 0 #ffffff,-13px 0 0 0 #ffffff;
-      // display: inline-block;
-      // padding: $u*0.4 0;
-    }
     .views-row {
       background: #e5e5e5 none repeat scroll 0 0;
       padding: 0.5em;

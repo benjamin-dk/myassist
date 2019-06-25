@@ -54,39 +54,46 @@
     </div>
   </header>
   <?php if (isset($podcast_nid)): ?>
-    <div class="podcast-header">
-      <?php print render($title_prefix); ?>
-      <div class="podcast-header-title">
-        <div class="podcast-header-title-wrapper">
-          <?php if ($title): ?>
-            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
-          <?php endif; ?>
-          <?php if ($header_img_subtitle): ?>
-            <h2 class="subtitle" id="page-subtitle"><?php print $header_img_subtitle ; ?></h2>
-          <?php endif; ?>
+    <div class="header-img-wrapper">
+      <div class="podcast-header">
+        <?php print render($title_prefix); ?>
+        <div class="podcast-header-title">
+          <div class="podcast-header-title-wrapper">
+            <?php if ($title): ?>
+              <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+            <?php endif; ?>
+            <?php if ($header_img_subtitle): ?>
+              <h2 class="subtitle" id="page-subtitle"><?php print $header_img_subtitle ; ?></h2>
+            <?php endif; ?>
 
-          <?php print render($title_suffix); ?>
+            <?php print render($title_suffix); ?>
+          </div>
         </div>
+        <?php print render($page['content']['system_main']['nodes'][$podcast_nid]['field_podcast_header_img']); ?>
       </div>
-      <?php print render($page['content']['system_main']['nodes'][$podcast_nid]['field_podcast_header_img']); ?>
     </div>
   <?php endif; ?>
 
   <?php if (isset($generic_header_img_nid)): ?>
-    <div class="generic-header-img">
-      <?php print render($title_prefix); ?>
-      <div class="generic-header-img-title">
-        <div class="generic-header-img-title-wrapper">
-          <?php if ($title): ?>
-            <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
-          <?php endif; ?>
-          <?php if (isset($header_img_subtitle)): ?>
-            <h2 class="subtitle" id="page-subtitle"><?php print $header_img_subtitle ; ?></h2>
-          <?php endif; ?>
-          <?php print render($title_suffix); ?>
+    <div class="header-img-wrapper">
+      <div class="generic-header-img">
+        <?php print render($title_prefix); ?>
+        <div class="generic-header-img-title">
+          <div class="generic-header-img-title-wrapper">
+            <?php if ($title): ?>
+              <h1 class="page__title title" id="page-title"><?php print $title; ?></h1>
+            <?php endif; ?>
+            <?php if (isset($header_img_subtitle)): ?>
+              <h2 class="subtitle" id="page-subtitle"><?php print $header_img_subtitle ; ?></h2>
+            <?php endif; ?>
+            <?php print render($title_suffix); ?>
+            <?php if (isset($cta_button_link)): ?>
+              <?php print $cta_button_link; ?>
+            <?php endif; ?>          
+          </div>
         </div>
+        <?php print render($page['content']['system_main']['nodes'][$generic_header_img_nid]['field_generic_header_img']); ?>
       </div>
-      <?php print render($page['content']['system_main']['nodes'][$generic_header_img_nid]['field_generic_header_img']); ?>
     </div>
   <?php endif; ?>
 
