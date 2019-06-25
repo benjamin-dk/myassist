@@ -72,6 +72,30 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
 
 function myassist_theme_preprocess_page(&$variables, $hook) {
   myassist_theme_set_header_img_vars($variables);
+
+  $node = menu_get_object();
+  // Exit if we are not on a node
+  if (!isset($node)) {
+    return;
+  }
+  if (!empty($node->field_cta_button)) {
+    $field_cta_button = field_get_items('node', $node, 'field_cta_button');
+    $field_cta_link_path = '/node/' . $field_cta_button[0]['target_id'];
+
+    $field_cta_title = t('No title');
+    if (!empty($node->field_cta_button_title)) {
+      $field_cta_title = field_get_items('node', $node, 'field_cta_button_title');
+
+      $field_cta_title = $field_cta_title[0]['safe_value'];
+    }
+    $variables['cta_button_link'] = l($field_cta_title, $field_cta_link_path, 
+      array('attributes' => 
+        array('class' => 
+          array('cta-button')
+        )
+      )
+    );
+  }
 }
 
 /**
