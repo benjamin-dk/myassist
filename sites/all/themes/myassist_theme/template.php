@@ -38,6 +38,13 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
 
   // Add conditional scripts
   if (!path_is_admin(current_path())) {
+    /* Add cookiebot script to head. */
+    $cookiebot_markup = '<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4701a8cf-157e-4aa1-899c-83cff9f01318" type="text/javascript" data-blockingmode="auto"></script>';
+    $cookiebot = array(
+      '#type' => 'markup',
+      '#markup' => $cookiebot_markup,
+    );
+    drupal_add_html_head($cookiebot, 'cookiebot');
     // Add Facebook Pixel tracking code on all pages
     $fb_markup = '<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=686677638133594&ev=PageView&noscript=1"/></noscript>';
     $fb_pixel = array(
@@ -46,13 +53,6 @@ function myassist_theme_preprocess_html(&$variables, $hook) {
     );
     drupal_add_html_head($fb_pixel, 'fb_pixel');
     drupal_add_js(drupal_get_path('theme', 'myassist_theme') . '/js/facebook_pixel_code.js');
-    /* Add cookiebot script to head. */
-    $cookiebot_markup = '<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4701a8cf-157e-4aa1-899c-83cff9f01318" type="text/javascript" async></script>';
-    $cookiebot = array(
-      '#type' => 'markup',
-      '#markup' => $cookiebot_markup,
-    );
-    drupal_add_html_head($cookiebot, 'cookiebot');
 
     // Add questionnaire popup script and css. Popup markup is in block /admin/structure/block/manage/block/26/configure - @todo: needs testin
     // drupal_add_css(drupal_get_path('theme', 'myassist_theme') . '/css/bpopup.css', array('group' => CSS_THEME, 'type' => 'file', 'weight' => 10));
